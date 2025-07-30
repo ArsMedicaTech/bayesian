@@ -1,0 +1,20 @@
+{
+  "name": "Bayesian",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "julia.executablePath": "/usr/local/bin/julia"
+  },
+  "postCreateCommand": "julia --project=/workspace -e 'using Pkg; Pkg.instantiate()'",
+  "extensions": [
+    "julialang.language-julia"
+  ],
+  "mounts": [
+    "source=${localWorkspaceFolder}/,target=/workspace,type=bind"
+  ],
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspace"
+}
