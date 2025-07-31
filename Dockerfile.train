@@ -1,0 +1,14 @@
+FROM julia:1.10
+WORKDIR /app
+
+COPY Project.toml Manifest.toml ./
+RUN julia --project=. -e 'using Pkg; Pkg.instantiate()'
+
+COPY . .
+
+ENV SEPSIS_CSV_URL=https://darrenmackenzie-chalice-bucket.s3.us-east-1.amazonaws.com/static/Sepsis.csv
+RUN mkdir -p data
+RUN julia --project=. -e 'using HTTP; HTTP.download(ENV["SEPSIS_CSV_URL"], "data/Sepsis.csv")'
+RUN julia --project=. models/sepsis/train.jl
+
+# Saved model should be in `saved/` directory.
